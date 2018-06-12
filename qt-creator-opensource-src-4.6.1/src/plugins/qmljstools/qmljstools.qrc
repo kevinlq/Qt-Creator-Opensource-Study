@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/qmljstools">
+        <file>images/category_qml.png</file>
+    </qresource>
+</RCC>

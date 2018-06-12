@@ -1,0 +1,190 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage list-of-language-items.html
+    \previouspage Artifact
+    \nextpage Export
+    \qmltype Depends
+    \inqmlmodule QbsLanguageItems
+    \ingroup list-of-items
+    \keyword QML.Depends
+
+    \brief Represents dependencies between products and modules.
+
+    A Depends item can appear inside a \l{Product} or \l{Module} item.
+
+    For example, the following product will load the \l{cpp} module. In
+    addition, it will try to load modules that may or may not exist, and in the
+    latter case use a fallback.
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        Depends {
+            name: "awesome_module"
+            versionAtLeast: "2.0"
+            required: false
+        }
+        Depends {
+            name: "adequate_module"
+            condition: !awesome_module.present
+            required: false
+        }
+        Depends {
+            name: "inferior_module"
+            condition: !awesome_module.present && !adequate_module.present
+        }
+
+        // ...
+    }
+    \endcode
+
+
+    \section1 Dependency Parameters
+
+    Sometimes it is desirable to have certain dependencies handled differently
+    than others. For example, one might want to depend on a dynamic library
+    without linking it.
+
+    This can be done by setting the \l{dependency-parameters-cpp}{cpp.link}
+    dependency parameter to \c{true} in the dynamic library dependency:
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        Depends { name: "some_dynamic_lib"; cpp.link: false }
+
+        // ...
+    }
+    \endcode
+
+    Dependency parameters are a special type of property that can only be set
+    within Depends and \l [QML] {Parameters} items. Dependency parameters are
+    declared in the modules they belong to.
+
+    In the example above, the \l{cpp} module declares the parameter \c{link}.
+    The Depends item for \c{some_dynamic_lib} sets \c{cpp.link} to
+    \c{false}, which tells the linker rule to ignore this particular dependency.
+*/
+
+/*!
+    \qmlproperty bool Depends::condition
+
+    Determines whether the dependency will actually be applied.
+
+    \defaultvalue \c true
+*/
+
+/*!
+    \qmlproperty string Depends::versionAtLeast
+
+    The minimum value that the dependency's \c version property needs to have.
+    If the actual version is lower than that, loading the dependency will fail.
+    The value consists of integers separated by dots.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string Depends::versionBelow
+
+    A value that the dependency's \c version property must be lower than. If the
+    actual version is equal to or higher than that, loading the dependency will
+    fail. The value consists of integers separated by dots.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty stringList Depends::productTypes
+
+    A list of product types. Any enabled product in the project that has a
+    matching type will become a dependency of the product containing the Depends
+    item.
+
+    This property is mutually exclusive with the \l name and \l submodules
+    properties.
+
+    The \l required and \l profiles properties are ignored if this property is
+    set.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool Depends::required
+
+    Setting this property to \c false creates a \e{soft dependency}, meaning
+    that it is not considered an error if the given module cannot be found.
+    In such a case, an instance of the respective module will be created, but
+    only the \l{Module::present}{Module.present} property will be available for
+    querying, and it will be set to \c false.
+
+    \defaultvalue \c true
+*/
+
+/*!
+    \qmlproperty string Depends::name
+
+    The name of the dependent product or module.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty stringList Depends::profiles
+
+    A list of profiles.
+
+    If the dependency is on a product and that product is going to be built for
+    more than one profile, you can specify here which instance of the product
+    the dependency is on.
+
+    See the \l{qbs::profiles}{qbs.profiles} property for more information.
+    An empty list means a dependency on all instances of the product with the given name,
+    regardless of their profile.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool Depends::limitToSubProject
+
+    If \l productTypes is set and this property is \c true, only products that
+    are in the same sub-project as the product containing the Depends item are
+    considered.
+
+    \defaultvalue \c false
+*/
+
+/*!
+    \qmlproperty stringList Depends::submodules
+
+    A list of submodules of the module to depend on, if applicable.
+
+    \nodefaultvalue
+*/

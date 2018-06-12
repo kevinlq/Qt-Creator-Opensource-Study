@@ -1,0 +1,124 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype ico
+    \inqmlmodule QbsModules
+    \since Qbs 1.11
+
+    \brief Provides support for building ICO (.ico) and CUR (.cur) files.
+
+    The \c ico module contains properties and rules for building
+    Microsoft Windows Icon (.ico) and Microsoft Windows Cursor (.cur) files.
+
+    \note This module relies on the \c icotool command-line tool from the
+    \c icotools package, which must be installed separately and found in the
+    \c PATH or an appropriate system binaries directory for your system (for
+    example, \c /usr/bin or \c /usr/local/bin).
+
+    \section2 Relevant File Tags
+    \target filetags-ico
+
+    \table
+    \header
+        \li Tag
+        \li Auto-tagged File Names
+        \li Since
+        \li Description
+    \row
+        \li \c{"cur"}
+        \li n/a
+        \li 1.11
+        \li The rule that creates cursor (.cur) files
+            attaches this tag to its output artifact.
+    \row
+        \li \c{"ico"}
+        \li n/a
+        \li 1.11
+        \li The rule that creates icon (.ico) files
+            attaches this tag to its output artifact.
+    \row
+        \li \c{"png"}
+        \li \c{"*.png"}
+        \li 1.11
+        \li Source files with this tag indicate PNG files
+            which are used as inputs to create icon or cursor files.
+    \endtable
+*/
+
+/*!
+    \qmlproperty int ico::cursorHotspotX
+
+    The cursor hotspot x coordinate. Only relevant when building .cur files.
+
+    This property must be set individually for each input PNG file.
+
+    \note \c icoutils version 0.32 or greater is required to set the
+    hotspot in cursor files with multiple images.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty int ico::cursorHotspotY
+
+    The cursor hotspot y coordinate. Only relevant when building .cur files.
+
+    This property must be set individually for each input PNG file.
+
+    \note \c icoutils version 0.32 or greater is required to set the
+    hotspot in cursor files with multiple images.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool ico::raw
+
+    Whether to store the input file as a raw PNG, as supported in Windows Vista.
+
+    Only relevant when building .ico files.
+
+    This property must be set individually for each input PNG file.
+
+    It is recommended to set this value only for icon sizes larger than or equal
+    to 256x256.
+
+    \defaultvalue \c{false}
+*/
+
+/*!
+    \qmlproperty string ico::icotoolFilePath
+
+    The full path of the \c icotool binary.
+
+    This property should not normally need to be changed if \QBS was able to
+    automatically detect it.
+
+    \defaultvalue Determined automatically.
+*/

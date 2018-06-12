@@ -1,0 +1,109 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage list-of-language-items.html
+    \previouspage Export
+    \nextpage Group
+    \qmltype FileTagger
+    \inqmlmodule QbsLanguageItems
+    \ingroup list-of-items
+    \keyword QML.FileTagger
+
+    \brief Assigns file tags to files.
+
+    This item assigns file tags to files.
+    The FileTagger item can appear in \l{Product} items or \l{Module} items.
+
+    For every source artifact that has no file tag, \QBS will search for a
+    FileTagger with a pattern that matches the file name of the source
+    artifact. If a matching file tagger is found, then the file tags specified
+    in the FileTagger item are assigned to the source artifact.
+
+    If there is more than one matching FileTagger, all file taggers with the
+    same highest priority are taken into account and their file tags are
+    accumulated.
+
+    The FileTagger item can be attached to a product or a module. In the latter
+    case, its effect is the same as if it had been attached to all products
+    having a dependency on the respective module. For instance, the
+    \l{cpp} module of \QBS has, among others, the following file tagger:
+
+    \code
+    FileTagger {
+        patterns: "*.cpp"
+        fileTags: ["cpp"]
+    }
+    \endcode
+
+    As a result, the \c "cpp" tag is automatically attached to all files ending
+    with \c ".cpp" in products depending on the \c cpp module. This causes them
+    to be compiled, because a C++ compiler rule has \c "cpp" in its list of
+    matching input tags.
+
+    File taggers are disabled if file tags are set explicitly in a \l{Product}
+    {product} or \l{Group}{group}. For example, the \c "cpp" tag is not attached
+    to the \c .cpp files in the following product:
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        Group {
+            files: "*.cpp"
+            fileTags: "other"
+        }
+    }
+    \endcode
+*/
+
+/*!
+    \qmlproperty stringList FileTagger::patterns
+    \since Qbs 1.0
+
+    A list of patterns to match against. Supports the usual wildcards '*', '?'
+    and '[]'.
+
+    Neither the list itself nor any of its elements may be empty.
+*/
+
+/*!
+    \qmlproperty list FileTagger::fileTags
+    \since Qbs 1.0
+
+    Tags to attach to a product's files. These can then be matched by a rule.
+
+    \defaultvalue An empty list
+*/
+
+/*!
+    \qmlproperty int FileTagger::priority
+    \since Qbs 1.10
+
+    The priority of the FileTagger. A higher numerical value means a higher
+    priority.
+
+    \defaultvalue 0
+*/

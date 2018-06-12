@@ -1,0 +1,91 @@
+The QtCreator 1.2 release contains bug fixes and new features.
+
+Below is a list of relevant changes. You can find a complete list of changes
+within the logs of QtCreator's sources. Simply check it out from the public git
+repository e.g.,
+
+git clone git://gitorious.org/qt-creator/qt-creator.git
+git log --pretty=oneline v1.1.0..v1.2.0
+
+This release introduces source and binary incompatible changes to the plugin
+API, so if you have created your own custom plugins, they will need to be
+adapted accordingly.
+
+General:
+   * The Welcome Screen has been redesigned.
+   * There has been some speed improvements: large amounts of persistent data.
+     (e.g., Qt Locator's cache) is now stored in an SQLite database.
+   * The window title now displays the current file's name.
+
+Editing
+   * Added an option for listing methods alphabetically in the combo box above
+     the editor.
+   * Added a block highlighting feature.
+   * Improved the code folding markers.
+   * FakeVim mode has received further improvements.
+   * It is now possible to disable Ctrl+Click navigation.
+   * Optional XCode-style tab indentation has been added.
+   * Ui changes now propagate immediately to the code model.
+   * Fixed possibly missing code completion with MinGW toolchain.
+   * Added an option for turning off antialiasing of text editor fonts.
+   * It is now possible to search within the text editor using regular
+     expressions.
+   * Added an action to delete a line without copying it.
+   * Added actions to copy a line up/down (Ctrl+Alt+Up/Down).
+
+Building and Running
+   * Added the option to auto-save before building.
+   * Made auto-build before run optional.
+   * Added the ability to set environment variables specific for running.
+   * Fixed a bug that prevented the use of Qt versions < 4.2.
+
+Debugging
+   * Added support for Windows Console Debugger (x86 and AMD64).
+   * Added command line options to attach the debugger to process ids.
+   * Further improved dumpers.
+   * Changed the way dumpers are loaded on Windows, enabling it for MinGW 64.
+   * Made it possible to disable breakpoints.
+   * Made it possible to float the debugger views.
+
+Wizards
+   * Added a wizard that creates an empty Qt4 project.
+
+Designer
+   * Added the external Qt Designer editor to the "Open With" menus.
+
+Version control plugins
+   * Made the submit action raise existing submit editors.
+   * Made SVN detection recognize TortoiseSVN using "_svn" as directory.
+   * Fixed Perforce configuration checking, ensuring that it used the settings
+     correctly.
+
+Documentation
+   * Added a tutorial on how to create an application from scratch using Qt
+     Creator.
+
+I18N
+   * Added infrastructure for translations.
+   * Added German translation.
+
+Platform Specific
+
+Windows
+  * Qt Creator now displays native path separators.
+  * Added experimental support for the Microsoft C++ compilers from Windows
+    SDKs or VS 2005/2008 (x86 and AMD64).
+
+Mac
+
+Linux
+
+Other Unixes
+   * Made Qt Creator less dependant on Linux specific defines.
+
+Additional credits go to:
+   * axasia <axasia@gmail.com> (japanese translation, compile fixes)
+   * Christian Hoenig <christian@hoenig.cc> ("Build Project Only" submenu and
+     build project dependencies, various patches)
+   * Enrico Ros <enrico.ros@gmail.com> (italian translation)
+   * Joel Nordell <joel.nordell@chloridepower.com> (XCode-style tab behavior,
+     various patches)
+   * Serge Ratke <dev.serge.ratke@gmx.de> (copy lines up/down)

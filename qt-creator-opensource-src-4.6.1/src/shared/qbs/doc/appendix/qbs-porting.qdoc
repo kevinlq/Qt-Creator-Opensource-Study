@@ -1,0 +1,505 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \previouspage building-qbs.html
+    \page porting-to-qbs.html
+    \nextpage attributions.html
+
+    \title Appendix B: Migrating from Other Build Systems
+
+    You can use the \l{create-project}{qbs create-project} command to
+    automatically generate \QBS project files from an arbitrary directory
+    structure. This is a useful starting point when migrating from other
+    build tools, such as qmake or CMake.
+
+    To use the tool, switch to the project directory and run the
+    \c {qbs create-project} command, which is located in the \c bin directory of
+    the \QBS installation directory (or the Qt Creator installation directory).
+
+    After generating the initial .qbs file, add the missing configuration
+    variables and functions to it, as described in the following sections.
+
+    \section1 Migrating from qmake
+
+    The following sections describe the \QBS equivalents of qmake variable
+    values.
+
+    \section2 CONFIG
+
+    Specify project configuration and compiler options.
+
+    \section3 console
+
+    Set the \l{Product::consoleApplication}{Product.consoleApplication} property
+    to \c true for the \l{Application}, \l{CppApplication},or \l{QtApplication}
+    item. For example:
+
+    \code
+    Application {
+        name: "helloworld"
+        files: "main.cpp"
+        Depends { name: "cpp" }
+        consoleApplication: true
+    }
+    \endcode
+
+    \section3 ordered
+
+    This qmake variable has no direct equivalent in \QBS. Instead, the build
+    order is determined by implicit and explicit dependencies between products.
+    To add an explicit dependency, add a \l{Depends} item to a
+    \l{Product}{product}:
+
+    \code
+    CppApplication {
+        name: "myapp"
+        Depends { name: "mylib" }
+    }
+    \endcode
+
+    The \c myapp product depends on and links to the \c mylib product, and is
+    therefore built after it.
+
+    \section3 qt
+
+    In qmake, the Qt dependency is implicit, whereas in \QBS it is not.
+    If \c {CONFIG -= qt}, add a \l{Depends} item to specify that
+    the \l{Product}{product} depends on the \l{cpp} module:
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+    }
+    \endcode
+
+    \section2 DEFINES
+
+    Set the \l{cpp::defines}{cpp.defines} property for the \l{Product}{product}.
+
+    \note To reference \c cpp.defines, you must specify a dependency on the
+    \l{cpp} module.
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        cpp.defines: ["SUPPORT_MY_FEATURES"]
+    }
+    \endcode
+
+    \section2 DESTDIR
+
+    We recommend that you use the \l{Installing Files}{installation mechanism}
+    to specify the location of the target file:
+
+    \code
+    Application {
+        Group {
+            name: "Runtime resources"
+            files: "*.qml"
+            qbs.install: true
+            qbs.installDir: "share/myproject"
+        }
+        Group {
+            name: "The App itself"
+            fileTagsFilter: "application"
+            qbs.install: true
+            qbs.installDir: "bin"
+        }
+    }
+    \endcode
+
+    If that is not possible, you can use the \l{Product::}{destinationDirectory}
+    property:
+
+    \code
+    DynamicLibrary {
+        name: "mydll"
+        destinationDirectory: "libDir"
+    }
+    \endcode
+
+    \section2 HEADERS, SOURCES, FORMS, RESOURCES
+
+    Include header, source, form, and resource files as values of
+    \l{Product::files}{Product.files} property:
+
+    \code
+    QtApplication {
+        name: "myapp"
+        files: ["myapp.h", "myapp.cpp", "myapp.ui", "myapp.qrc"]
+    }
+    \endcode
+
+    \QBS uses \l{FileTagger}{file taggers} to figure out what kind of file
+    it is dealing with.
+
+    \section2 ICON
+
+    There is no direct equivalent in \QBS. If you add a \l{Depends} {dependency}
+    to the \l{ib} module and add the \c .xcassets directory as a value of the
+    \l{Product::files}{Product.files} property, \QBS takes care of setting the
+    application icon automatically when building for Apple platforms:
+
+    \code
+    Application {
+        name: "myapp"
+        files [".xcassets"]
+        Depends { name: "ib" }
+    }
+    \endcode
+
+    Alternatively, you can set the icon name as the value of the
+    \l{bundle::infoPlist}{bundle.infoPlist} parameter, specify a dependency to
+    the \l{ib} module, and add the application \c .icns file as a value of the
+    \l{Product::}{files} property:
+
+    \code
+    Application {
+        name: "myapp"
+        files ["myapp.icns"]
+        Depends { name: "ib" }
+        bundle.infoPlist: ({"CFBundleIconFile": "myapp"})
+    \endcode
+
+    \section2 INCLUDEPATH
+
+    Add the paths to the include files as values of the \l{cpp::includePaths}
+    {cpp.includePaths} property:
+
+    \code
+    CppApplication {
+        cpp.includePaths: ["..", "some/other/dir"]
+    }
+    \endcode
+
+    \section2 LIBS
+
+    For libraries that are part of the project, use \l{Depends} items.
+
+    To pull in external libraries, use the \l{cpp::libraryPaths}
+    {cpp.libraryPaths} property for the Unix \c -L (library path) flags and the
+    \l{cpp::dynamicLibraries}{cpp.dynamicLibraries} and \l{cpp::staticLibraries}
+    {cpp.staticLibraries} properties for the
+    \c -l (library) flags.
+
+    For example, \c {LIBS += -L/usr/local/lib -lm} would become:
+
+    \code
+    CppApplication {
+        cpp.libraryPaths: ["/usr/local/lib"]
+        cpp.dynamicLibraries: ["m"]
+    }
+    \endcode
+
+    \section2 OUT_PWD
+
+    Use the \l{Product::buildDirectory}{Product.buildDirectory} property
+    to refer to the base output directory of the generated artifacts.
+
+    \section2 PWD
+
+    Corresponds to the the file-scope variable \c path.
+
+    \section2 _PRO_FILE_
+
+    Corresponds to the file-scope variable \c filePath when used in a
+    \l{Project}{project} or \l{Product}{product}.
+
+    \section2 _PRO_FILE_PWD_
+
+    Corresponds to the \l{Project::sourceDirectory}{Project.sourceDirectory} or
+    \l{Product::sourceDirectory}{Product.sourceDirectory} property.
+
+    \section2 QMAKE_ASSET_CATALOGS
+
+    Add a \l{Depends}{dependency} to the \l{ib} module and add the \c .xcassets
+    directory as a value of the \l{Product::}{files} property:
+
+    \code
+    Application {
+        name: "myapp"
+        files [".xcassets"]
+        Depends { name: "ib" }
+    }
+    \endcode
+
+    \section2 QMAKE_BUNDLE_DATA
+
+    For the time being, you can manually place files in the appropriate location
+    using the \l{Installing Files}{installation mechanism}. Better solutions are
+    under development.
+
+    \section2 QMAKE_BUNDLE_EXTENSION
+
+    Set the \l{bundle::extension}{bundle.extension} property.
+
+    \note Unlike qmake, \QBS automatically prepends a period (.) to the property
+    value.
+
+    \section2 QMAKE_{C,CXX,OBJECTIVE}_CFLAGS{_DEBUG,_RELEASE}
+
+    Use the \l{cpp::commonCompilerFlags}{cpp.commonCompilerFlags} property or
+    the properties corresponding to each compiler flags variable:
+
+    \table
+        \header
+            \li qmake Variable
+            \li cpp Module Property
+        \row
+            \li \c QMAKE_CFLAGS_DEBUG
+
+                \c QMAKE_CFLAGS_RELEASE
+            \li \l{cpp::cFlags}{cpp.cFlags}
+        \row
+            \li \c QMAKE_CXXFLAGS_DEBUG
+
+                \c QMAKE_CXXFLAGS_RELEASE
+            \li \l{cpp::cxxFlags}{cpp.cxxFlags}
+        \row
+            \li \c QMAKE_OBJECTIVE_CFLAGS
+            \li \l{cpp::objcFlags}{cpp.objcFlags}
+
+                \l{cpp::objcxxFlags}{cpp.objcxxFlags}
+    \endtable
+
+    Use \l{Properties} items or simple conditionals as values of the
+    \l{qbs::buildVariant}{qbs.buildVariant} property to simulate the \c _DEBUG
+    and \c _RELEASE variants of the qmake variables.
+
+    \section2 QMAKE_FRAMEWORK_BUNDLE_NAME
+
+    Set the \l{bundle::bundleName}{bundle.bundleName} property (which is derived
+    from \l{Product::targetName}{Product.targetName}) combined with
+    \l{bundle::extension}{bundle.extension}.
+
+    \section2 QMAKE_FRAMEWORK_VERSION
+
+    Set the \l{bundle::frameworkVersion}{bundle.frameworkVersion} property.
+
+    \section2 QMAKE_INFO_PLIST
+
+    Include the \c info.plist file as a value of \l{Product::}{files} property
+    and specify a dependency to the \l{bundle} module:
+
+    \code
+    Application {
+        name: "myapp"
+        files ["info.plist"]
+        Depends { name: "bundle" }
+    }
+    \endcode
+
+    \QBS will automatically add any necessary properties to your \c Info.plist
+    file. Typically, it determines the appropriate values from the other
+    properties in the project, and therefore you do not need to use the
+    \c {Info.plist.in > Info.plist} configuration mechanism. Further, you almost
+    never need to embed placeholders into the source \c Info.plist file. Set the
+    \l{bundle::processInfoPlist}{bundle.processInfoPlist} property to \c false
+    to disable this behavior:
+
+    \code
+    \\ ...
+        bundle.processInfoPlist: false
+    \endcode
+
+    In addition to, or instead of, using an actual \c Info.plist file, you can
+    add \c Info.plist properties using the \l{bundle::infoPlist}
+    {bundle.infoPlist} property. For example:
+
+    \code
+    \\ ...
+        bundle.infoPlist: ({
+            "NSHumanReadableCopyright": "Copyright (c) 2017 Bob Inc",
+            "Some other key", "Some other value, & XML special characters are no problem! >;) 非凡!"
+        })
+    \endcode
+
+    \section2 QMAKE_LFLAGS
+
+    Set the \l{cpp::linkerFlags}{cpp.linkerFlags} property for the \l{Product}
+    {product}.
+
+    \section2 QMAKE_{MACOSX,IOS,TVOS,WATCHOS}_DEPLOYMENT_TARGET
+
+    For each qmake deployment target variable, use the corresponding property of
+    the \l{cpp} module:
+
+    \table
+        \header
+            \li qmake Variable
+            \li cpp Module Property
+        \row
+            \li \c QMAKE_MACOSX_DEPLOYMENT_TARGET
+            \li \l{cpp::minimumMacosVersion}{cpp.minimumMacosVersion}
+        \row
+            \li \c QMAKE_IOS_DEPLOYMENT_TARGET
+            \li \l{cpp::minimumIosVersion}{cpp.minimumIosVersion}
+        \row
+            \li \c QMAKE_TVOS_DEPLOYMENT_TARGET
+            \li \l{cpp::minimumTvosVersion}{cpp.minimumTvosVersion}
+        \row
+            \li \c QMAKE_WATCHOS_DEPLOYMENT_TARGET
+            \li \l{cpp::minimumWatchosVersion}{cpp.minimumWatchosVersion}
+    \endtable
+
+    \section2 QMAKE_RPATHDIR
+
+    Set the \l{cpp::rpaths}{cpp.rpaths} property for the \l{Product}{product}.
+
+    \section2 QMAKE_SONAME_PREFIX
+
+    Use the \l{cpp::sonamePrefix}{cpp.sonamePrefix} property for the \l{Product}
+    {product}.
+
+    \section2 QML_IMPORT_PATH
+
+    Used only for Qt Creator QML syntax highlighting. Inside a \l{Product},
+    \l{Application}, \l{CppApplication}, or \l{QtApplication}, create a
+    \c qmlImportPaths property:
+
+    \code
+    Product {
+        name: "myProduct"
+        property stringList qmlImportPaths: [sourceDirectory + "/path/to/qml/"]
+    }
+    \endcode
+
+    \section2 QT
+
+    Add a \l{Depends} item to the \l{Product}{product} that specifies the
+    dependencies to \l{Qt} modules. For example:
+
+    \code
+    QtApplication {
+        Depends { name: "Qt.widgets" }
+    }
+    \endcode
+
+    You could also use the following form that is equivalent to the previous
+    one:
+
+    \code
+    QtApplication {
+        Depends { name: "Qt"; submodules: "widgets" }
+    }
+    \endcode
+
+    \section2 QTPLUGIN
+
+    Building static applications often requires linking to static QPA plugins,
+    such as \c qminimal. You can use the following syntax to enable \QBS to
+    link to the required plugins:
+
+    \code
+    QtApplication {
+        name: "myapp"
+        Depends { name: "Qt"; submodules: ["core", "gui", "widgets"] }
+        Depends { name: "Qt.qminimal"; condition: Qt.core.staticBuild }
+    }
+    \endcode
+
+    \section2 RC_FILE
+
+    Add Windows resource files to the value of the \l{Product::files}
+    {Product.files} property.
+
+    \section2 TARGET
+
+    Use the \l{Product::targetName}{Product.targetName} property to specify the
+    base file name of target artifacts.
+
+    \section2 TEMPLATE
+
+    \section3 app
+
+    Use \l{Application} or \l{CppApplication} as the \l{Product}{product}:
+
+    \code
+    CppApplication {
+        name: "helloworld"
+        files: "main.cpp"
+    }
+    \endcode
+
+    This is roughly equivalent to:
+
+    \code
+    Product {
+        name: "helloworld"
+        type: "application"
+        files: "main.cpp"
+        Depends { name: "cpp" }
+    }
+    \endcode
+
+    \section3 lib
+
+    Use either \l{DynamicLibrary} or \l{StaticLibrary} as the \l{Product}
+    {product}, depending on whether the value of \c CONFIG in the .pro file is
+    \c shared or \c static. For example, if the value is \c shared:
+
+    \code
+    DynamicLibrary {
+        name: "mydll"
+        files: ["mySourceFile.cpp"]
+        Depends { name: "cpp" }
+    }
+    \endcode
+
+    \section3 subdirs
+
+    In a \l{Project} item, specify subdirectories as values of the
+    \l{Project::}{references} property:
+
+    \code
+    Project {
+        references: [
+            "app/app.qbs",
+            "lib/lib.qbs"
+        ]
+    }
+    \endcode
+
+    \section2 message(), warning(), error(), log()
+
+    You can use the JavaScript console printing functions (\c console.info,
+    \c console.warn, \c console.error, and \c console.log) to print info,
+    warning, error, and log messages to the console.
+
+    \code
+    Product {
+        name: {
+            console.info("--> now evaluating the product name");
+            return "theName";
+        }
+        Depends { name: "cpp" }
+        cpp.includePath: { throw "An error occurred." }
+    }
+    \endcode
+*/

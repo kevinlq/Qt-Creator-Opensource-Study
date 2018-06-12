@@ -1,0 +1,343 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype wix
+    \inqmlmodule QbsModules
+    \since Qbs 1.2
+
+    \brief Provides Windows Installer XML Toolset support.
+
+    The \c wix module contains properties and rules for building MSI and
+    EXE setup packages with the \l{Windows Installer XML Toolset}.
+
+    This module is available on all platforms.
+
+    \section2 Relevant File Tags
+    \target filetags-wix
+
+    \table
+    \header
+        \li Tag
+        \li Auto-tagged File Names
+        \li Since
+        \li Description
+    \row
+        \li \c{"msi"}
+        \li -
+        \li 1.2
+        \li The rule that creates the Microsoft Installer setup file attaches this tag to its output
+            artifact.
+    \row
+        \li \c{"wixpdb"}
+        \li -
+        \li 1.2
+        \li The rule that creates the Microsoft Installer setup file or WiX setup executable
+            attaches this tag to the associated debug symbol file.
+    \row
+        \li \c{"wixsetup"}
+        \li -
+        \li 1.2
+        \li The rule that creates the WiX setup executable attaches this tag to its output artifact.
+    \row
+        \li \c{"wxi"}
+        \li \c{*.wxi}
+        \li 1.2
+        \li This tag is attached to WiX include files.
+    \row
+        \li \c{"wxl"}
+        \li \c{*.wxl}
+        \li 1.2
+        \li This tag is attached to WiX localization files.
+    \row
+        \li \c{"wxs"}
+        \li \c{*.wxs}
+        \li 1.2
+        \li This tag is attached to WiX source files.
+            Each source file will be compiled into one WiX object file.
+    \endtable
+*/
+
+/*!
+    \qmlproperty bool wix::debugInformation
+
+    Whether to generate debug information.
+
+    \sa {qbs::debugInformation}{qbs.debugInformation}
+
+    \defaultvalue \l{qbs::debugInformation}{qbs.debugInformation}
+*/
+
+/*!
+    \qmlproperty stringList wix::defines
+
+    A list of preprocessor macros that get passed to the compiler.
+
+    To set macro values, use the following syntax:
+
+    \badcode
+    wix.defines: ["USE_COLORS=1", 'COLOR_STR="blanched almond"']
+    \endcode
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool wix::enableQbsDefines
+
+    Whether to define preprocessor macros corresponding to values from the
+    project and product objects.
+
+    When building a 64-bit package, the preprocessor variable \c{Win64} will
+    also be defined.
+
+    \defaultvalue \c{true}
+*/
+
+/*!
+    \qmlproperty bool wix::visualStudioCompatibility
+
+    Whether to pass most of the same preprocessor macros to the compiler as
+    Visual Studio does.
+
+    This allows easier authoring of WiX files that are compatible with both
+    \QBS and MSBuild.
+
+    \defaultvalue \c{true}
+*/
+
+/*!
+    \qmlproperty pathList wix::includePaths
+
+    A list of include paths.
+
+    Relative paths are considered to be relative to the \c .qbs product file
+    they are used in.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool wix::treatWarningsAsErrors
+
+    Whether warnings will be handled as errors and cause the build to fail.
+
+    \defaultvalue \c{false}
+*/
+
+/*!
+    \qmlproperty string wix::warningLevel
+
+    The severity of warnings to emit.
+
+    The higher the level, the more warnings will be shown.
+
+    Possible values include: \c{"none"}, \c{"normal"}, \c{"pedantic"}
+
+    \defaultvalue \c{"normal"}
+*/
+
+/*!
+    \qmlproperty bool wix::verboseOutput
+
+    Whether to display verbose output from the compiler and linker.
+
+    \defaultvalue \c{false}
+*/
+
+/*!
+    \qmlproperty stringList wix::compilerFlags
+
+    A list of additional flags for the Candle compiler.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty stringList wix::linkerFlags
+
+    A list of additional flags for the Light linker.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty stringList wix::cultures
+
+    A list of localizations to include in the MSI.
+
+    If left undefined, includes all localizations.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty stringList wix::extensions
+
+    A list of extension assemblies to link into the output.
+
+    Possible values include:
+
+    \list
+        \li custom assemblies
+        \li \c{"WixBalExtension"}
+        \li \c{"WixComPlusExtension"}
+        \li \c{"WixDependencyExtension"}
+        \li \c{"WixDifxAppExtension"}
+        \li \c{"WixDirectXExtension"}
+        \li \c{"WixFirewallExtension"}
+        \li \c{"WixGamingExtension"}
+        \li \c{"WixIisExtension"}
+        \li \c{"WixMsmqExtension"}
+        \li \c{"WixNetFxExtension"}
+        \li \c{"WixPSExtension"}
+        \li \c{"WixSqlExtension"}
+        \li \c{"WixTagExtension"}
+        \li \c{"WixUIExtension"}
+        \li \c{"WixUtilExtension"}
+        \li \c{"WixVSExtension"}
+    \endlist
+
+    \defaultvalue \c{["WixBalExtension"]} if the product type is an EXE setup
+    application, otherwise \c{undefined}.
+*/
+
+/*!
+    \qmlproperty string wix::version
+
+    The WiX version.
+
+    Consists of four numbers separated by dots. For example, "3.7.1224.0".
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty int wix::versionMajor
+
+    The WiX major version.
+
+    \defaultvalue \c{versionParts[0]}
+*/
+
+/*!
+    \qmlproperty int wix::versionMinor
+
+    The WiX minor version.
+
+    \defaultvalue \c{versionParts[1]}
+*/
+
+/*!
+    \qmlproperty list wix::versionParts
+
+    The WiX version as a list.
+
+    For example, WiX version 3.7.1224.0 would correspond to a value of
+    \c[3, 7, 1224, 0].
+
+    \defaultvalue \c []
+*/
+
+/*!
+    \qmlproperty int wix::versionPatch
+
+    The WiX patch level.
+
+    \defaultvalue \c{versionParts[2]}
+*/
+
+/*!
+    \qmlproperty int wix::versionBuild
+
+    The fourth WiX version number component.
+
+    \defaultvalue \c{versionParts[3]}
+*/
+
+/*!
+    \qmlproperty path wix::toolchainInstallPath
+
+    The WiX installation directory.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue Determined automatically by searching the registry for the
+    latest version.
+*/
+
+/*!
+    \qmlproperty path wix::toolchainInstallRoot
+
+    The WiX binaries directory.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue Determined automatically by searching the registry for the
+    latest version.
+*/
+
+/*!
+    \qmlproperty string wix::compilerName
+
+    The name of the compiler binary.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue \c{"candle.exe"}
+*/
+
+/*!
+    \qmlproperty string wix::compilerPath
+
+    The directory where the compiler binary is located.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue \l{wix::}{compilerName}
+*/
+
+/*!
+    \qmlproperty string wix::linkerName
+
+    The name of the linker binary.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue \c{"light.exe"}
+*/
+
+/*!
+    \qmlproperty string wix::linkerPath
+
+    The directory where the linker binary is located.
+
+    This property should not normally need to be changed.
+
+    \defaultvalue \l{wix::}{linkerName}
+*/

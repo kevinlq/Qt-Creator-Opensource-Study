@@ -1,0 +1,179 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \contentspage {Qt Creator Manual}
+    \previouspage qmldesigner-pathview-editor.html
+    \page qmldesigner-connections.html
+    \nextpage quick-components.html
+
+    \title Adding Connections
+
+    You can use the \uicontrol {Connections} view to:
+
+    \list
+
+        \li Connect objects to signals.
+
+        \li Specify dynamic properties for objects.
+
+        \li Create bindings between the properties of two objects.
+
+        \li Manage backend QObjects.
+
+    \endlist
+
+    For examples of adding connections, see
+    \l{Creating Scalable Buttons and Borders}.
+
+    \section1 Connecting Objects to Signals
+
+    To connect objects to signals in QML, create \l{Connections} objects.
+
+    \image qmldesigner-connections.png
+
+    To create the connections:
+
+    \list 1
+
+        \li Select the \uicontrol {Connections} tab.
+
+        \li Select the \inlineimage plus.png
+            (\uicontrol Add) button to add a connection.
+
+        \li Select \uicontrol Target to add the object to connect to a signal.
+
+        \li Select \uicontrol {Signal Handler} to select the signal that the connection
+            will listen to from a list of all signals available for the object.
+
+        \li Select \uicontrol Actions to specify the action to perform when
+            the signal is emitted. You use JavaScript to specify the actions.
+
+    \endlist
+
+    \section1 Specifying Dynamic Properties
+
+    You can bind \l{Properties} to dynamic expressions to define global properties for an
+    object that can be read by other objects. For example, you can specify
+    global properties for the root object that you can use in the child objects.
+
+    \image qmldesigner-dynamicprops.png
+
+    To specify dynamic properties for an object:
+
+    \list 1
+
+        \li Select the \uicontrol {Properties} tab.
+
+        \li Select \uicontrol Item to select the object to specify the property for.
+
+        \li Select \uicontrol Property to give a name to the property.
+
+        \li Select \uicontrol {Property Type} to specify the type of the property.
+
+        \li Select \uicontrol {Property Value} to specify the value of the property.
+
+    \endlist
+
+    \section1 Adding Bindings Between Properties
+
+    To dynamically change the behavior of an object, you can create a
+    \l{Property Binding} between the properties of two objects.
+
+    \image qmldesigner-bindings.png
+
+    To bind a property of an object to the property of another object:
+
+    \list 1
+
+        \li Select the \uicontrol {Bindings} tab.
+
+        \li Select the \inlineimage plus.png
+            (\uicontrol Add) button to add a binding.
+
+        \li Select \uicontrol Item to select the target object whose property you want
+            to change dynamically.
+
+        \li Select \uicontrol Property to select the property to bind to a source
+            property.
+
+        \li Select \uicontrol {Source Item} to select the object whose property you
+            want to use to determine the behavior of the target object.
+
+        \li Select \uicontrol {Source Property} to select the property to bind the
+            target property to.
+
+    \endlist
+
+    \section1 Managing C++ Backend Objects
+
+    Many applications provide QObject objects implemented in C++ that work as a
+    bridge between QML and C++. Such objects are typically registered with
+    qmlRegisterType or qmlRegisterSingletonType and then used by QML to
+    communicate with the C++ backend. Another example of such objects are the
+    state machines created by the \l {Using the Qt SCXML Compiler (qscxmlc)}
+    {Qt SCXML Compiler}.
+
+    Backend objects in a QML file are accessible if the QML file contains the
+    required imports. In addition, for a non-singleton QObject, a dynamic
+    property that contains the QObject must be specified.
+
+    A \e local QObject is instantiated in the current \e .qml file, as follows:
+
+    \badcode
+    property MyType myType: MyType {}.
+    \endcode
+
+    Otherwise the property is just defined, as follows:
+
+    \badcode
+    property MyType myType
+    \endcode
+
+    To manage backend objects:
+
+    \list 1
+
+        \li Select the \uicontrol Backends tab to view accessible backend
+            objects.
+
+            \image qmldesigner-backends.png
+
+        \li Select the \inlineimage plus.png
+            (\uicontrol Add) button to add a backend object in the
+            \uicontrol {Add New C++ Backend} dialog.
+
+        \li In the \uicontrol Type field, select the type of the backend QObject
+            to add.
+
+        \li Select the \uicontrol {Define object locally} check box if the
+            QObject is not registered as a singleton.
+
+        \li Select \uicontrol OK to add the required import and to create the
+            property for a non-singleton object.
+
+    \endlist
+
+*/

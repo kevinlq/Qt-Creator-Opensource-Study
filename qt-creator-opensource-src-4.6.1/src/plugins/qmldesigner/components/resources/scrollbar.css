@@ -1,0 +1,33 @@
+QScrollBar {
+    background-color: creatorTheme.BackgroundColorDark;
+}
+
+QScrollBar:vertical {
+    width: 10px;
+}
+
+QScrollBar:horizontal {
+    height: 10px;
+}
+
+QScrollBar::handle {
+    background-color: creatorTheme.QmlDesignerButtonColor;
+}
+
+QScrollBar::handle:vertical {
+    min-height: 30px;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 30px;
+}
+
+QScrollBar::add-line,
+QScrollBar::sub-line,
+QScrollBar::left-arrow,
+QScrollBar::right-arrow,
+QScrollBar::add-page,
+QScrollBar::sub-page {
+    height: 0px;
+    width: 0px;
+}

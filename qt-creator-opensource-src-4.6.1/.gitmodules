@@ -1,0 +1,4 @@
+[submodule "qbs"]
+	path = src/shared/qbs
+	url = ../../qbs/qbs.git
+	ignore = dirty

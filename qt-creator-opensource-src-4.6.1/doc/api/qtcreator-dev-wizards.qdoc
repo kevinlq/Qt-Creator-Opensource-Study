@@ -1,0 +1,156 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page qtcreator-dev-wizards.html
+    \title Creating Wizards in Code
+
+    \section1 Introduction
+
+    If the functionality provided by template-based
+    \l{http://doc.qt.io/qtcreator/creator-project-wizards.html}{custom wizards}
+    is not sufficient for your case, you can write wizards in code.
+
+    A wizard in \QC is an instance of a class implementing
+    the Core::IWizardFactory interface that has a creator function registered
+    with IWizardFactory::registerFactoryCreator.
+
+    Implementing wizards requires:
+    \list
+    \li Writing a factory class that derives from Core::IWizardFactory. This is
+        a very generic interface that does not make any assumption about what
+        the wizard does and what its UI looks like.
+
+    \li Providing a set of parameters that determine how the wizard shows up
+        in the list of wizards in the  \uicontrol {New File or Project} dialog.
+
+        When deriving from Core::IWizardFactory, the constructor has to call
+        the following setters provided by the base class:
+
+        \list
+        \li \c setId
+        \li \c setWizardKind
+        \li \c setIcon
+        \li \c setDescription
+        \li \c setDisplayName
+        \li \c setCategory
+        \li \c setDisplayCategory
+        \li \c setDescriptionImage
+        \li \c setRequiredFeatures
+        \li \c setFlags
+        \endlist
+
+    \li Implementing the wizard UI
+
+        Typically, this will be a class derived from Utils::Wizard.
+        Utils::Wizard extends QWizard with the functionality to show a progress
+        bar on the left.
+
+    \li Implementing the wizard functionality
+
+        It is recommended to use Core::GeneratedFile to represent files
+        that need to be written to disk. They allow to delay writing the actual
+        data to disk till the wizard is done.
+    \endlist
+
+    \section2 Relevant Classes
+
+    \table
+        \header
+            \li Class
+            \li Description
+
+        \row
+            \li Core::IWizardFactory
+            \li \QC wizard interface, implementations of which are registered
+                with ExtensionSystem::PluginManager.
+
+        \row
+            \li Core::GeneratedFile
+            \li A file containing name, contents, and some attributes.
+
+        \row
+            \li Utils::FileWizardPage
+            \li Introductory wizard page asking for file name and path.
+
+        \row
+            \li Utils::ProjectIntroPage
+            \li Introductory wizard page asking for project name and path.
+    \endtable
+
+    \section2 Setters and Getters of IWizardFactory
+
+    The setters and getters listed below determine how the wizard shows up
+    in the list of wizards in the  \uicontrol {New File or Project} dialog.
+
+    \table
+        \header
+            \li Type
+            \li Parameter Name
+            \li Description
+
+        \row
+            \li Core::IWizardFactory::WizardKind
+            \li kind
+            \li Enumeration value that indicates the type of the wizard
+                (\c project or \c file).
+
+        \row
+            \li QIcon
+            \li icon
+            \li Icon to show.
+
+        \row
+            \li QString
+            \li description
+            \li Descriptive text.
+
+        \row
+            \li QString
+            \li displayName
+            \li Name to be shown in the list.
+
+        \row
+            \li QString
+            \li id
+            \li Unique identifier for the wizard. It also determines the order
+                within a category.
+
+        \row
+            \li QString
+            \li category
+            \li Identifier of the category under which the wizard is to be
+                listed. It also determines the order of the categories.
+
+        \row
+            \li QString
+            \li displayCategory
+        \li Description of the category.
+    \endtable
+
+    All wizards that have the same category set will be grouped together in the
+    \uicontrol {New File or Project} dialog.
+
+*/

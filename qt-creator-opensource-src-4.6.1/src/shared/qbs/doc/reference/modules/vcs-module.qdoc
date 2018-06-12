@@ -1,0 +1,108 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype vcs
+    \inqmlmodule QbsModules
+    \since Qbs 1.10
+
+    \brief Provides support for version control systems
+
+    The \c vcs module provides the current state of the project's repository via
+    the \l{vcs::}{repoState} property. By default, a \c C header is also
+    generated, allowing for simple retrieval of the repository state directly
+    from within your C/C++ sources. This is useful to embed information into
+    binaries about the exact state of the repository from which they were built.
+
+    For example:
+
+    \code
+    #include <vcs-repo-state.h>
+    #include <iostream>
+
+    int main()
+    {
+        std::cout << "I was built from " << VCS_REPO_STATE << std::endl;
+    }
+    \endcode
+
+    Above, a header file called \c{vcs-repo-state.h} is created, defining a
+    macro called \c VCS_REPO_STATE, which expands to a character constant
+    describing the current state of the repository. For Git, this would be the
+    current HEAD's commit hash.
+*/
+
+/*!
+    \qmlproperty string vcs::headerFileName
+
+    The name of the C header file to be created.
+
+    Set this to \c undefined if you do not want a header file to be generated.
+
+    \defaultvalue \c{"vcs-repo-state.h"}
+*/
+
+/*!
+    \qmlproperty string vcs::repoDir
+
+    The root directory of the repository.
+
+    \defaultvalue The top-level project directory (\l{Project::sourceDirectory}
+    {project.sourceDirectory}).
+*/
+
+/*!
+    \qmlproperty string vcs::repoState
+
+    The current state of the repository.
+
+    For example, in Git this is the commit hash of the current HEAD.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string vcs::toolFilePath
+
+    Set this property if the tool has an unusual name in your local
+    installation, or if it is located in a directory that is not in the build
+    environment's \c PATH.
+
+    \defaultvalue The file name of the version control tool corresponding to
+    \l{vcs::type}{type}.
+*/
+
+/*!
+    \qmlproperty string vcs::type
+
+    The version control system used in the project.
+
+    Currently, the supported values are \c{"git"} and \c{"svn"}.
+
+    \defaultvalue auto-detected
+*/

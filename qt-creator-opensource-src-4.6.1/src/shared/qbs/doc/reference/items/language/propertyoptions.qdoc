@@ -1,0 +1,64 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage list-of-language-items.html
+    \previouspage Properties
+    \nextpage Rule
+    \inqmlmodule QbsLanguageItems
+    \qmltype PropertyOptions
+    \ingroup list-of-items
+    \keyword QML.PropertyOptions
+
+    \brief Provides inline documentation for properties within product and module items.
+
+    A PropertyOptions item can appear inside a \l{Product} or \l{Module} item to
+    provide inline documentation for properties.
+*/
+
+/*!
+    \qmlproperty stringList PropertyOptions::allowedValues
+
+    A list of the values permitted by the property.
+
+    The default value, \c{undefined}, indicates that any value is permitted.
+*/
+
+/*!
+    \qmlproperty string PropertyOptions::description
+
+    A brief description of the property.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string PropertyOptions::name
+
+    The name of the property to document.
+
+    \nodefaultvalue
+*/

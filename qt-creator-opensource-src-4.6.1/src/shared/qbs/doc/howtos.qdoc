@@ -1,0 +1,309 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage index.html
+    \previouspage custom-modules.html
+    \nextpage reference.html
+    \page howtos.html
+
+    \title How-tos
+
+    This page provides concrete instructions for common scenarios.
+
+    \list
+    \li \l{How do I build a Qt-based project?}
+    \li \l{How do I make my app build against my library?}
+    \li \l{How do I use precompiled headers?}
+    \li \l{How do I create a module for a third-party library?}
+    \li \l{How do I create application bundles and frameworks on iOS, macOS, tvOS, and watchOS?}
+    \li \l{How do I apply C/C++ preprocessor macros to only a subset of the files in my product?}
+    \li \l{How do I make the state of my Git repository available to my source files?}
+    \endlist
+
+    \section1 How do I build a Qt-based project?
+
+    First of all, your project files need to declare \l{Depends}{dependencies}
+    on \l{Qt} modules.
+
+    To build the project, you need a matching \e profile. The following commands
+    set up and use a Qt-specific profile:
+    \code
+    $ qbs setup-qt /usr/bin/qmake qt
+    $ cd my_project
+    $ qbs profile:qt
+    \endcode
+    If you plan to use this profile a lot, consider making it the default one:
+    \code
+    $ qbs config defaultProfile qt
+    $ cd my_project
+    $ qbs
+    \endcode
+    See \l{Managing Qt Versions} for more details.
+    \note These instructions are only relevant for building from the command line.
+    If you use Qt Creator, profiles are set up automatically from the information in the Kit.
+
+    \section1 How do I make my app build against my library?
+
+    This is achieved by introducing a \e dependency between the two products using the
+    \l{Depends} item. Here is a simple, but complete example:
+    \code
+    import qbs
+    Project {
+        CppApplication {
+            name : "the-app"
+            files : [ "main.cpp" ]
+            Depends { name: "the-lib" }
+        }
+        DynamicLibrary {
+            name: "the-lib"
+            Depends { name: "cpp" }
+            files: [
+                "lib.cpp",
+                "lib.h",
+            ]
+            Export {
+                Depends { name: "cpp" }
+                cpp.includePaths: [product.sourceDirectory]
+           }
+        }
+    }
+    \endcode
+
+    The product \c the-lib is a dynamic library. It expects other products to build against it, and
+    for that purpose, it exports an include path (via an \l{Export} item), so that the
+    source files in these products can include the library's header file.
+
+    The product \c the-app is an application that expresses its intent to link against \c the-lib
+    by declaring a dependency on it. Now \c main.cpp can include \c lib.h (because of the exported
+    include path) and the application binary will link against the library (because the linker
+    \l{Rule}{rule} in the \l{cpp} module considers library dependencies as inputs).
+    \note In a non-trivial project, the two products would not be defined in the same file.
+          Instead, you would put them into files of their own and use the
+          \l{Project::references}{Project.references} property to pull them into the project.
+          The product definitions would stay exactly the same. In particular, their location
+          in the project tree is irrelevant to the relationship between them.
+
+    \section1 How do I use precompiled headers?
+
+    If you use a \l Group item to add a precompiled header file to a product
+    and mark it with the \l{filetags-cpp}{relevant file tag} (\c c_pch_src,
+    \c cpp_pch_src, \c objc_pch_src, or \c objcpp_pch_src), it is used
+    automatically.
+
+    Only one precompiled header is allowed per product and language.
+
+    For example:
+
+    \code
+    import qbs
+
+    CppApplication {
+        name: "the-app"
+        files: ["main.cpp"]
+
+        Group {
+            files: ["precompiled-header.pch"]
+            fileTags: ["cpp_pch_src"]
+        }
+    }
+    \endcode
+
+    \section1 How do I create a module for a third-party library?
+
+    If you have pre-built binary files in your source tree, you can create
+    modules for them and then introduce dependencies between your project and
+    the modules to pull in the functionality of a third-party library.
+
+    Create the following folder structure to store the module files:
+
+    \code
+    $projectroot/modules/ThirdParty
+    \endcode
+
+    Then create a file in the directory that specifies the module properties
+    for each supported toolchain. The filename must have the \c .qbs extension.
+    The module will be pulled in if a product declares a dependency on it.
+
+    In the following example, \c lib1.dylib is a multi-architecture library
+    containing both 32-bit and 64-bit code.
+
+    \code
+    ---ThirdParty.qbs---
+
+    Module {
+        Depends { name: "cpp" }
+        cpp.includePaths: ["/somewhere/include"]
+        Properties {
+            condition: qbs.targetOS.contains("android")
+            cpp.dynamicLibraries: ["/somewhere/android/" + Android.ndk.abi + "/lib1.so"]
+        }
+        Properties {
+            condition: qbs.targetOS.contains("macos")
+            cpp.dynamicLibraries: ["/somewhere/macos/lib1.dylib"]
+        }
+        Properties {
+            condition: qbs.targetOS.contains("windows") && qbs.architecture === "x86"
+            cpp.dynamicLibraries: ["/somewhere/windows_x86/lib1.lib"]
+        }
+        Properties {
+            condition: qbs.targetOS.contains("windows") && qbs.architecture === "x86_64"
+            cpp.dynamicLibraries: ["/somewhere/windows_x86_64/lib1.lib"]
+        }
+    }
+    \endcode
+
+    Finally, declare dependencies on \c ThirdParty in your project:
+
+    \code
+    import qbs
+    CppApplication {
+        name: "the-app"
+        files: ["main.cpp"]
+        Depends { name: "ThirdParty" }
+    }
+    \endcode
+
+    \section1 How do I create application bundles and frameworks on iOS, macOS, tvOS, and watchOS?
+
+    Creating an application bundle or framework is achieved by introducing a
+    dependency on the \l{bundle} module and setting the \l{bundle::isBundle}
+    {bundle.isBundle} property to \c true.
+
+    Here is a simple example for an application:
+
+    \code
+    import qbs
+
+    Application {
+        Depends { name: "cpp" }
+        Depends { name: "bundle" }
+        bundle.isBundle: true
+        name: "the-app"
+        files: ["main.cpp"]
+    }
+    \endcode
+
+    and for a framework:
+
+    \code
+    import qbs
+
+    DynamicLibrary {
+        Depends { name: "cpp" }
+        Depends { name: "bundle" }
+        bundle.isBundle: true
+        name: "the-lib"
+        files: ["lib.cpp", "lib.h"]
+    }
+    \endcode
+
+    \QBS also supports building static frameworks. You can create one by
+    replacing the \l{DynamicLibrary} item with a \l{StaticLibrary} item in the
+    example above.
+
+    \note When using the \l{Application} item (or convenience items, such as
+    \l{CppApplication}, \l{DynamicLibrary}, and \l{StaticLibrary}), your
+    products will be built as bundles on Apple platforms by default (this
+    behavior is subject to change in a future release).
+
+    To explicitly control whether your product is built as a bundle, set the \c bundle.isBundle
+    property. Setting the \l{Product::}{consoleApplication} property of your
+    product will also influence whether your product is built as a bundle.
+
+    Building your application against your framework is the same as linking a normal dynamic or
+    static library; see the \l{How do I make my app build against my library?} section for an
+    example.
+
+    \section1 How do I apply C/C++ preprocessor macros to only a subset of the files in my product?
+
+    Use a \l{Group} item to define a subset of project files. To add
+    macros within the group, you need to use the \c outer.concat property,
+    because you are adding macros to those specified in the outer scope.
+
+    In the following example, \c MACRO_EVERYWHERE is defined for all files in
+    the \l{Product} unless a Group overrides the macro, whereas
+    \c MACRO_GROUP is only defined for \c groupFile.cpp.
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        cpp.defines: ["MACRO_EVERYWHERE"]
+        Group {
+            cpp.defines: outer.concat("MACRO_GROUP")
+            files: "groupFile.cpp"
+        }
+    }
+    \endcode
+
+    The \c cpp.defines statements inside a \c Group only apply to the files in
+    that \c Group, and therefore you cannot use a \c Group to include a bunch of
+    files and globally visible macros. The macros must be specified in a
+    \l{Properties} item at the same level as the \c Group if
+    they need to be visible to files outside the \c Group:
+
+    \code
+    Product {
+        Depends { name: "cpp" }
+        Group {
+            condition: project.supportMyFeature
+            files: "myFile.cpp"
+        }
+
+        property stringList commonDefines: ["ONE", "TWO"]
+
+        Properties {
+            condition: project.supportMyFeature
+            cpp.defines: commonDefines.concat("MYFEATURE_SUPPORTED")
+        }
+    }
+    \endcode
+
+    \section1 How do I make the state of my Git repository available to my source files?
+
+    Add a dependency to the \l{vcs} module to your product:
+    \code
+    CppApplication {
+        // ...
+        Depends { name: "vcs" }
+        // ...
+    }
+    \endcode
+    Your source files will now have access to a macro whose value is a string representing the
+    current Git or Subversion HEAD:
+    \code
+    #include <vcs-repo-state.h>
+    #include <iostream>
+
+    int main()
+    {
+        std::cout << "I was built from " << VCS_REPO_STATE << std::endl;
+    }
+    \endcode
+
+    This value is also available via the \l{vcs::repoState}{vcs.repoState}
+    property.
+*/

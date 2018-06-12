@@ -1,0 +1,186 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \page qt-modules.html
+    \inmodule qbs-modules
+
+    \title Qt Modules
+
+    \brief Provides Qt support.
+
+    The \c{Qt.*} modules contain properties and rules for Qt.
+
+    \section1 Creating Dependencies to Qt Modules
+
+    The Qt modules are grouped using the prefix \c Qt. If your product depends
+    on the Qt.core and Qt.network modules, you could write:
+
+    \code
+    Depends { name: "Qt.core" }
+    Depends { name: "Qt.network" }
+    \endcode
+
+    Or, alternatively:
+
+    \code
+    Depends { name: "Qt"; submodules: ["core", "network" } }
+    \endcode
+
+    The Qt modules that have properties and relevant file tags are described in
+    separate topics.
+
+    \section1 List of Submodules
+
+    \table
+    \header
+        \li Submodule Name
+        \li Qt Module Name
+        \li Notes
+    \row
+        \li axcontainer
+        \li QAxContainer
+        \li This module is only available on Windows.
+    \row
+        \li axserver
+        \li QAxServer
+        \li This module is only available on Windows.
+    \row
+        \li concurrent
+        \li Qt Concurrent
+        \li
+    \row
+        \li \l{Qt.core}{core}
+        \li Qt Core
+        \li For more information, see \l{Qt.core}.
+    \row
+        \li \l{Qt.dbus}{dbus}
+        \li Qt D-Bus
+        \li For more information, see \l{Qt.dbus}.
+    \row
+        \li \l{Qt.declarative}{declarative}
+        \li Qt Quick 1
+        \li Provides the \c{Qt Quick 1} module. For more information, see
+            \l{Qt.declarative}.
+    \row
+        \li designer
+        \li Qt Designer
+        \li
+    \row
+        \li enginio
+        \li Qt Enginio
+        \li
+    \row
+        \li \l{Qt.gui}{gui}
+        \li Qt GUI
+        \li For more information , see \l {Qt.gui}.
+    \row
+        \li help
+        \li Qt Help
+        \li You do not need this module for building \c qdoc documentation,
+            because that functionality is part of the Qt.core module. This
+            module is for using Qt classes such as \c QHelpEngine.
+    \row
+        \li multimedia
+        \li Qt Multimedia
+        \li
+    \row
+        \li multimediawidgets
+        \li Qt Multimedia Widgets
+        \li
+    \row
+        \li network
+        \li Qt Network
+        \li
+    \row
+        \li opengl
+        \li Qt OpenGL
+        \li
+    \row
+        \li phonon
+        \li Phonon (Qt 4 only)
+        \li
+    \row
+        \li printsupport
+        \li Qt Print Support
+        \li
+    \row
+        \li \l{Qt.quick}{quick}
+        \li Qt Quick 2
+        \li Provides the \c{Qt Quick} module (Qt Quick 2). For more information,
+            see \l{Qt.quick}.
+    \row
+        \li \l{Qt.qml}{qml}
+        \li Qt QML
+        \li For more information, see \l{Qt.qml}.
+    \row
+        \li script
+        \li Qt Script
+        \li
+    \row
+        \li \l{Qt.scxml}{scxml}
+        \li Qt Scxml
+        \li For more information, see \l {Qt.scxml}.
+    \row
+        \li sql
+        \li Qt SQL
+        \li
+    \row
+        \li svg
+        \li Qt SVG
+        \li
+    \row
+        \li testlib
+        \li Qt Test
+        \li
+    \row
+        \li webkit
+        \li Qt WebKit
+        \li
+    \row
+        \li webkitwidgets
+        \li Qt WebKit Widgets
+        \li
+    \row
+        \li widgets
+        \li Qt Widgets
+        \li
+    \row
+        \li xml
+        \li Qt XML
+        \li You do not need this module for the \c QXmlStreamReader and
+            \c QXmlStreamWriter classes, because those classes are a part of the
+            \c Qt.core module. This module provides the deprecated DOM and SAX
+            classes.
+    \row
+        \li xmlpatterns
+        \li Qt XML Patterns
+        \li
+        \li
+    \endtable
+*/

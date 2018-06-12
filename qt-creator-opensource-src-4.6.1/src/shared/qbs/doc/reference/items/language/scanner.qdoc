@@ -1,0 +1,105 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage list-of-language-items.html
+    \previouspage Rule
+    \nextpage SubProject
+    \qmltype Scanner
+    \inqmlmodule QbsLanguageItems
+    \ingroup list-of-items
+    \keyword QML.Scanner
+
+    \brief Creates custom dependency scanners in modules.
+
+    A Scanner item can appear inside a \l{Module} item, and allows to extract
+    dependencies for artifacts from the artifacts' file contents.
+    For example, this is what a scanner for "qrc" files might look like:
+    \code
+    import qbs.Xml
+
+    Module {
+      Scanner {
+        inputs: 'qrc'
+        scan: {
+          var xml = new Xml.DomDocument(input.filePath);
+          dependencies = [];
+          // retrieve <file> entries from the XML document
+          return dependencies;
+        }
+      }
+    }
+    \endcode
+*/
+
+/*!
+    \qmlproperty bool Scanner::condition
+
+    If \c true, the scanner is enabled, otherwise it does nothing.
+
+    \defaultvalue \c true
+*/
+
+/*!
+    \qmlproperty stringList Scanner::inputs
+
+    A list of \l{FileTagger}{file tags} the input artifacts must match.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty bool Scanner::recursive
+
+    Determines whether to scan the returned \l{Depends}{dependencies} using
+    the same scanner.
+
+    \defaultvalue \c false
+*/
+
+/*!
+    \qmlproperty script Scanner::searchPaths
+
+    A script that returns the paths where to look for \l{Depends}
+    {dependencies}.
+
+    The code in this script is treated as a function with the signature
+    \c{function(project, product, input)}.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty script Scanner::scan
+
+    A script that reads the input artifact and returns a string list with
+    \l{Depends}{dependencies}.
+
+    The code in this script is treated as a function with the signature
+    \c{function(project, product, input)}.
+
+    \nodefaultvalue
+*/

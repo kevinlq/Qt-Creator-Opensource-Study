@@ -1,0 +1,96 @@
+QFrame {
+   border: 2px;
+   background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QLabel {
+    border: none;
+    border-image: none;
+    padding: 0;
+    background: none;
+    color: creatorTheme.PanelTextColorLight;
+}
+
+QScrollArea {
+     border: 0px;
+     background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QStackedWidget {
+     border: 0px;
+     background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QGraphicsView {
+     border: 0px;
+     background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QLineEdit#itemLibrarySearchInput
+{
+    color: creatorTheme.PanelTextColorLight;
+    font-size: 11px;
+    border: 1px solid creatorTheme.QmlDesignerBackgroundColorDarker;
+    border-width: 1;
+    max-height: 20px;
+    min-height: 20px;
+    background-color: creatorTheme.FancyToolButtonSelectedColor;
+}
+
+ QTreeView {
+    color: creatorTheme.PanelTextColorLight;
+    selection-color: creatorTheme.PanelTextColorLight;
+    selection-background-color: creatorTheme.QmlDesigner_HighlightColor;
+ }
+
+ QListView {
+    color: creatorTheme.PanelTextColorLight;
+    selection-color: creatorTheme.PanelTextColorLight;
+    selection-background-color: creatorTheme.QmlDesigner_HighlightColor;
+ }
+
+  QComboBox QAbstractItemView {
+     show-decoration-selected: 1; /* make the selection span the entire width of the view */
+	 background-color: #494949; /* sets background of the menu */
+     border: 1px solid black;
+     margin: 0px; /* some spacing around the menu */
+     color: #cacaca;
+	 selection-background-color: #d2d2d2;
+	 selection-color: #404040;
+ }
+
+QTabWidget {
+     border: 0px;
+     background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QTabWidget::pane { /* The tab widget frame */
+     border: 0px;
+     background-color: creatorTheme.QmlDesignerBackgroundColorDarkAlternate;
+}
+
+QTabBar::tab {
+    width: 80px;
+    height: 22px;
+
+    border-image: none;
+    background-color: creatorTheme.QmlDesignerTabDark;
+    color: creatorTheme.QmlDesignerTabLight;
+
+    margin-top: 0x;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font: bold;
+    font-size: 11px;
+}
+
+QTabBar::tab:selected {
+    border: none; /* no border for a flat push button */
+    background-color: creatorTheme.QmlDesignerTabLight;
+    color: creatorTheme.QmlDesignerTabDark;
+}
+
+QWidget#itemLibrarySearchInputSpacer {
+    background-color: creatorTheme.QmlDesignerTabLight;
+}

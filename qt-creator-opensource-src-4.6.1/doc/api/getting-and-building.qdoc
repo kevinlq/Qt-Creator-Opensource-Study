@@ -1,0 +1,77 @@
+/****************************************************************************
+**
+** Copyright (C) 2016 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the Qt Creator documentation.
+**
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+**
+****************************************************************************/
+
+/*!
+    \page getting-and-building.html
+    \title Getting and Building Qt Creator
+
+    \code
+    TODO: This should be extended.
+    * Windows specific hassle, see README in \QC sources
+    \endcode
+
+    There are several reasons why you might want to do your own build of \QC,
+    like using the most current development version and being able to tweak \QC
+    at one or the other place. It is also necessary if you want to create your
+    own \QC plugin.
+
+    \section1 Getting Qt
+
+    Prebuilt \QC packages usually use the latest stable release of Qt. You can
+    see the exact minimum requirement at the top of \QC's \c {qtcreator.pro}.
+    (You can find the current version in our source repository here:
+    \l{https://code.qt.io/cgit/qt-creator/qt-creator.git/tree/qtcreator.pro#n4}.)
+
+    You can get prebuilt Qt packages from
+    \l{https://download.qt.io}{Qt Downloads}. If you want to use Qt as provided
+    by your Linux distribution, you need to make sure that all Qt development
+    packages and private header packages are also installed.
+
+    \section1 Getting and Building \QC
+
+    You can get the \QC sources for a specific version either by using one of
+    the released source bundles, or from the Git repository
+    \l{https://code.qt.io/cgit/qt-creator/qt-creator.git}. If you intend to
+    contribute to \QC itself, you should use the repository from our Gerrit
+    review tool as described in:
+    \l{https://wiki.qt.io/Setting_up_Gerrit}{Setting up Gerrit}.
+
+    We strongly encourage you to do out-of-source builds of \QC (also called
+    shadow-builds).
+
+    After you put the \QC sources somewhere (lets call the path
+    \c {<QtCreatorSources>})
+    you build it on Linux and Mac with
+
+    \code
+    cd <QtCreatorSources>/..
+    mkdir qtcreator-build
+    cd qtcreator-build
+    <QtInstall>/bin/qmake -r <QtCreatorSources>
+    make
+    \endcode
+
+    or the corresponding commands on Windows systems.
+*/

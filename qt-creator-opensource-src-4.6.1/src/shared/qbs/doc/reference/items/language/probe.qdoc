@@ -1,0 +1,84 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+/*!
+    \contentspage list-of-language-items.html
+    \previouspage Parameters
+    \nextpage Product
+    \qmltype Probe
+    \inqmlmodule QbsLanguageItems
+    \ingroup list-of-items
+    \keyword QML.Probe
+
+    \brief Locates files outside the project.
+
+    Probe items can appear inside \l{Product} and \l{Project} items.
+    They are run prior to building, for instance to locate dependent headers, libraries, and other
+    files outside the project directory whose locations are not known ahead of time.
+    Probes can be parameterized via their properties and typically store results in
+    properties as well. These results are then retrieved via the Probe's id, which is mandatory:
+    \code
+    Product {
+        Probe {
+            id: valueCalculator
+            property string parameter: "whatever"
+            property int value
+            configure: {
+                value = Utils.calculateValue(parameter); // Expensive operation
+                found = true;
+            }
+        }
+        property int theValue: valueCalculator.value
+    }
+    \endcode
+
+    \note Because Probes often invoke external processes, which is relatively expensive compared
+          to evaluating normal properties, their results are cached. To force re-evaluation
+          of a Probe, you can supply the \l{build-force-probe-execution}
+          {--force-probe-execution} command-line option to the \l{build} command.
+*/
+
+/*!
+    \qmlproperty bool Probe::condition
+
+    Determines whether the probe will actually be run.
+
+    \defaultvalue \c true
+*/
+
+/*!
+    \qmlproperty bool Probe::found
+
+    Indicates whether the probe was run successfully. Set by \l{configure}.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty script Probe::configure
+
+    A script that is executed when the probe is run.
+*/

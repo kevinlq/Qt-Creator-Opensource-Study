@@ -1,0 +1,132 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype lex_yacc
+    \inqmlmodule QbsModules
+    \since Qbs 1.6
+
+    \brief Provides support for the \c lex and \c yacc tools.
+
+    The \c lex_yacc module allows you to create scanners and parsers via the POSIX tools \c lex
+    and \c yacc, respectively. These tools are closely related and share a number of properties,
+    which is why they are represented by a single module.
+
+    \section2 Relevant File Tags
+    \target filetags-lexyacc
+
+    \table
+    \header
+        \li Tag
+        \li Auto-tagged File Names
+        \li Since
+        \li Description
+    \row
+        \li \c{"lex.input"}
+        \li \c{*.l}
+        \li 1.6
+        \li Source files with this tag serve as inputs to the \c lex tool.
+    \row
+        \li \c{"yacc.input"}
+        \li \c{*.y}
+        \li 1.6
+        \li Source files with this tag serve as inputs to the \c yacc tool.
+    \endtable
+*/
+
+/*!
+    \qmlproperty bool lex_yacc::enableCompilerWarnings
+    \since Qbs 1.8
+
+    Whether compiler warnings are displayed.
+
+    Because \c lex and \c yacc are known to produce files that will trigger
+    compiler warnings, such warnings are suppressed by default. Set this
+    property to \c true if you want to see them.
+
+    \defaultvalue \c{false}
+*/
+
+/*!
+    \qmlproperty string lex_yacc::lexBinary
+
+    The file path of the \c lex tool.
+
+    \defaultvalue \c{"lex"}
+*/
+
+/*!
+    \qmlproperty stringList lex_yacc::lexFlags
+
+    Additional command-line options for the \c lex tool.
+
+    \defaultvalue \c []
+*/
+
+/*!
+    \qmlproperty string lex_yacc::outputTag
+
+    The file tag for the generated scanner and parser sources.
+
+    Use \l{filetags-cpp}{"cpp"} if you want to use a C++ compiler on them.
+
+    \defaultvalue \l{filetags-cpp}{"c"}
+*/
+
+/*!
+    \qmlproperty bool lex_yacc::uniqueSymbolPrefix
+
+    If this property is \c true, the prefix \c yy normally used for the
+    generated lexer and parser functions is replaced by the base name of the
+    file provided as input to \c lex and \c yacc, respectively.
+
+    Enable this property if you want to use more than one lexer or parser in a
+    single product.
+
+    \note Enabling this property requires that the associated lexer and scanner
+    source files have the same base name. It also assumes a variant of \c lex
+    that supports the non-POSIX option \c{-P}, such as \c flex.
+
+    \defaultvalue \c{false}
+*/
+
+/*!
+    \qmlproperty string lex_yacc::yaccBinary
+
+    The file path of the \c yacc tool.
+
+    \defaultvalue \c{"yacc"}
+*/
+
+/*!
+    \qmlproperty stringList lex_yacc::yaccFlags
+
+    Additional command-line options for the \c yacc tool.
+
+    \defaultvalue \c []
+*/

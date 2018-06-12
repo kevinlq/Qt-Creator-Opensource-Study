@@ -1,0 +1,29 @@
+QTC_LIB_DEPENDS += \
+    clangsupport
+
+include(../../qtcreatortool.pri)
+include(../../shared/clang/clang_installation.pri)
+include(source/clangrefactoringbackend-source.pri)
+
+requires(!isEmpty(LIBTOOLING_LIBS))
+
+win32 {
+    LLVM_BUILDMODE = $$system($$llvm_config --build-mode, lines)
+    CONFIG(debug, debug|release):requires(equals(LLVM_BUILDMODE, "Debug"))
+}
+
+QT += core network
+QT -= gui
+
+LIBS += $$LIBTOOLING_LIBS
+INCLUDEPATH += $$LLVM_INCLUDEPATH
+
+QMAKE_CXXFLAGS += $$LLVM_CXXFLAGS
+
+SOURCES += \
+    clangrefactoringbackendmain.cpp
+
+unix:!disable_external_rpath:!contains(QMAKE_DEFAULT_LIBDIRS, $$LLVM_LIBDIR) {
+    !osx: QMAKE_LFLAGS += -Wl,-z,origin
+    QMAKE_LFLAGS += -Wl,-rpath,$$shell_quote($${LLVM_LIBDIR})
+}

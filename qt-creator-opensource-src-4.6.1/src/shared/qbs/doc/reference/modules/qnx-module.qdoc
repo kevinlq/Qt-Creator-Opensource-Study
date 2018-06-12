@@ -1,0 +1,85 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype qnx
+    \inqmlmodule QbsModules
+    \since Qbs 1.8
+
+    \brief Provides support for building QNX applications using the QNX SDK.
+
+    The \c qnx module contains properties and rules for QNX development.
+    It has been tested with the QNX 6.5, 6.6, and 7.0 SDKs.
+*/
+
+/*!
+    \qmlproperty string qnx::sdkDir
+
+    The SDK base directory.
+
+    \defaultvalue Determined automatically if the QNX SDK is installed at one of
+    the standard locations, such as \c ~/qnx700, \c /opt/qnx700, or
+    \c C:\\qnx700.
+*/
+
+/*!
+    \qmlproperty string qnx::configurationDir
+
+    The QNX configuration directory.
+
+    Equivalent to the \c{QNX_CONFIGURATION} environment variable.
+
+    \defaultvalue \c{~/.qnx}
+*/
+
+/*!
+    \qmlproperty string qnx::hostDir
+
+    The QNX host directory.
+
+    Equivalent to the \c{QNX_HOST} environment variable.
+
+    You should not normally need to set this property as it will be set to an
+    appropriate value based on your host operating system and the installed
+    QNX SDK in \l{qnx::}{sdkDir}.
+
+    \defaultvalue Determined automatically.
+*/
+
+/*!
+    \qmlproperty string qnx::targetDir
+
+    The QNX target directory.
+
+    Equivalent to the \c{QNX_TARGET} environment variable.
+
+    You should not normally need to set this property as it will be set to an
+    appropriate value based on the installed QNX SDK in \l{qnx::}{sdkDir}.
+
+    \defaultvalue Determined automatically.
+*/

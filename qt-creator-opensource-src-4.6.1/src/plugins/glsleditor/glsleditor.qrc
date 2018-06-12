@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/glsleditor">
+        <file>images/glslfile.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,211 @@
+Qt Creator version 2.5 contains bug fixes and new features.
+
+The most important changes are listed in this document. For a complete
+list of changes, see the Git log for the Qt Creator sources that
+you can check out from the public Git repository. For example:
+
+git clone git://gitorious.org/qt-creator/qt-creator.git
+git log --cherry-pick --pretty=oneline v2.4.0...origin/2.5
+
+General
+   * Add a keyboard shortcut (Alt) to the locator to display the full path to
+     a located file (QTCREATORBUG-3805)
+   * Add "Search Again" to recent searches (QTCREATORBUG-621)
+   * Allow multiple parallel searches (QTCREATORBUG-6101)
+   * Add Execute filter to the locator, for executing external commands [by
+     Yuchen Deng]
+
+Experimental Plugins
+   * Show todo items in files [by Dmitry Savchenko initial version by
+     Vasiliy Sorokin]
+   * Support for autotools-based projects [by Patricia Santana Cruz]
+
+   Go to Help->About plugins to enable these!
+
+Editing
+   * Use the QML/JS editor for opening json files (QTCREATORBUG-4639)
+   * Add basic JSON validation according to the draft at
+     tools.ietf.org/html/draft-zyp-json-schema-03. Still work in progress.
+   * Add clipboad history that contains up to ten previous clips
+     (QTCREATORBUG-146)
+   * Add a shortcut for toggling bookmarks by pressing Shift and clicking
+     the left margin at a line (QTCREATORBUG-2852)
+   * Highlight search results of one character when whole words only is
+     specified (QTCREATORBUG-6372)
+   * Fix clean whitespace affecting lines that are already clean
+     (QTCREATORBUG-5712) [by Orgad Shaneh]
+   * Add a keyboard shortcut (Alt) to display context-sensitive help in a
+     popup if the corresponding option is enabled (QTCREATORBUG-6644)
+   * Fix layout update when folding/unfolding regions (QTCREATORBUG-6666)
+   * Fix position of code-assist popup when cursor is outside viewport
+     (QTCREATORBUG-6843)
+   * Add "Open with" context menu in resource editor (QTCREATORBUG-4224)
+   * Add task indicators in the left margin of a line
+
+Managing Projects
+   * Add facility to change multiple environment variables in the
+     build and run settings at the same time
+
+Debugging
+   * Improve display of vtables and dynamic types (QTCREATORBUG-6933 et al)
+   * Adjust QDir and QFileInfo gdb pretty printer after Qt 4.8 changes
+     and various others for Qt 5.0
+   * Adjust std::map dumper for gcc 4.6
+   * Adjust to new *stopped output notifications of gdb 7.4
+   * Add pretty printers for std::shared_ptr, std::unique_ptr, std::array,
+     std::complex, boost::posix_time::{ptime,time_duration},
+     boost::gregorian::date
+   * Improve remote debugging facilities including new convenience
+     dialogs like "Attach to Running Remote Process"
+   * Improve per-type and per-variable selection of display formats
+   * Add display variants for map-like types (std::map, QMap, QHash etc)
+   * Make "gdb startup script" directly editable
+   * Improve expansion behaviour of pinned tooltips (QTCREATORBUG-6554)
+   * Prevent automatic loading of incompatible dumpers
+   * Make Shift-F5 exit when debugging a core file (QTCREATORBUG-6111)
+   * Make popping up the output pane optional (QTCREATORBUG-6764)
+   * Make entering commands in the log view more convenient
+   * Re-enable debugging of Python scripts
+   * Add pretty-printing for D arrays and strings
+   * Add "Break on raise()" option for GDB/Windows
+
+Debugging QML/JS
+   * Relocate breakpoints to next executable code
+   * Implement run-to-line functionality
+   * Spruce up the script console for evaluating QML/JS expressions
+
+Analyzing Code
+   * Fix message for "incompatible" builds (QTCREATORBUG-7011)
+   * Fix suppression dialog (QTCREATORBUG-6500)
+
+C++ Support
+   * Fix completion and the dot-to-arrow conversion not triggering reliably
+   * Add basic refactoring action to insert an #include for an undefined
+     identifier
+   * Fix completion for namespace aliases at global and namespace scope
+     (QTCREATORBUG-166)
+   * Improve function signature synchronization by automatically renaming
+     parameter name uses in the function body when changing the name in the
+     declaration (QTCREATORBUG-6132)
+   * Improve preservation of non-cv specifiers when using function signature
+     synchronization (QTCREATORBUG-6620)
+   * Improve default argument handling with function signature synchronization
+     (QTCREATORBUG-5978)
+   * Add Doxygen/QDoc comment completion when typing /*@ or /*! before
+     declarations (QTCREATORBUG-2752)
+   * Add "extract function" refactoring action (QTCREATORBUG-5485)
+   * Change behavior of "select all" during rename so that it selects
+     the symbol in question (QTCREATORBUG-5520) [by Bojan Pretrovic]
+   * Fix preprocess for multiline #if directives (QTCREATORBUG-5843)
+   * Fix encoding issues during refactoring operations (QTCREATORBUG-6147)
+   * Fix "convert to decimal" refactoring for lower case letters
+     (QTCREATORBUG-6240)
+   * Fix "add definition" refactoring when the matching implementation file
+     has no other definition yet (QTCREATORBUG-6696)
+   * Improve behavior of switch header/source when files with the same name
+     exist (QTCREATORBUG-6799) [by Nicolas Arnaud-Cormos]
+   * Improve behavior of follow symbol and add definition for projects with
+     equivalent symbol names (QTCREATORBUG-6697) (QTCREATORBUG-6792)
+   * Improve support for C++11 nullptr, constexpr, static_assert, noexcept,
+     inline namespaces, and auto.
+   * Fix missing result of find usages when there is a match on the first
+     line (QTCREATERBUG-6176)
+   * Fix highlighting for spaces in comments and strings (QTCREATORBUG-5802)
+   * Add "rearrange parameter list" refactoring action [by Bojan Petrovic]
+   * Add indent/unindent actions shortcut [by Adam Treat]
+   * Improve sorting of completion items (QTCREATORBUG-6404)
+   * Improve C++11 lambda support, including formatting
+   * Fix "go to definition" of macros (QTCREATORBUG-2240, QTCREATORBUG-6175,
+     QTCREATORBUG-6848, QTCREATORBUG-7008, QTCREATORBUG-7009)
+   * Fix completion by not adding parentheses when completing dereferenced
+     function
+
+QML/JS Support
+   * Add correct scoping for signal handlers; enables completion of signal
+     handler arguments such as mouse in MouseArea.onClicked
+   * Disable some follow-up errors if an import failed
+   * Automatically add parentheses when completing a function
+   * Add refactoring action to wrap elements in a Loader
+   * Add ability to suppress warnings for a line by prepending
+     // @disable-check M123
+   * Add refactoring action to prepend a warning suppression comment
+   * Add // @enable-all-checks to enable checks disabled by default
+   * Add several new hints and warnings
+   * Add 'Reformat' action that reformats the whole file
+   * Add support for module APIs defined in QML modules
+   * Don't warn about unterminated case blocks in a switch statement if
+     there's a comment containing the string 'fallthrough' or 'fall-through'
+   * Improve indentation of function literals
+   * Fix indent after do-while without trailing semicolon
+
+Qt Quick Designer
+
+Help
+
+Platform Specific
+
+Mac
+   * Fix adding Qt version on Mac OS X Lion (QTCREATORBUG-6222)
+   * Pass architecture and bit width from the tool chain build setting
+     to qmake (QTCREATORBUG-6088)
+
+Linux (GNOME and KDE)
+
+Windows
+
+Symbian Target
+
+Remote Linux Support
+
+Qt Designer
+
+FakeVim
+   * Implement Ctrl-a, Ctrl-x, &, gm, `., '., :<x>%, ciw.
+   * Add handling of number key block
+   * Fix cursor column after up/down in replace mode
+   * Fix case sensitivity of parsing of codes like "<Esc>" in mappings
+   * Overhaul register handling
+   * Add old-style settings of for 'bs' (QTCREATORBUG-6640)
+   * Fix off-by-one error when creating a single line range (QTCREATORBUG-6630)
+
+Version control plugins
+   * Rename the ScmGit plugin to Git
+   * Rename the VCSBase plugin to VcsBase
+   * URL and email support in log editors [by Hugues Delorme]
+   * Completion of classes, files, methods and namespace in commit message
+     editor [by Hugues Delorme]
+   * Show icons for files in submit editor [by Hugues Delorme]
+
+
+Additional credits go to:
+   Adam Treat (editor improvements)
+   Andre Hartmann (generic project improvements)
+   Axsia (translation)
+   Bai Jing (translation)
+   Bojan Petrovic (C++ quickfix)
+   Campbell Barton (color scheme fix)
+   cnavarro (debugger fix)
+   Denis Mingulov (Qt5 related fix, debugger fixes, editor fix)
+   Dmitry Savchenko (todo plugin)
+   Element9 (C++ quickfix)
+   Felix Geyer (debugger fix)
+   Flex Ferrum (C++0x improvements)
+   Francois Ferrand (Generic Project improvements, C++ improvements)
+   Hugues Delorme (version control system improvements and fixes)
+   Jan Kerekes (unit testing)
+   Joe Hermaszewski (debugging impromevents)
+   Konstantin Tokarev (generic project fix, Mac related fix)
+   Martin Aumüller (fakevim fix)
+   Nicolas Arnaud-Cormos (many fixes, analyzer work)
+   Orgad Shaneh (*many* bug fixes and lots of polish)
+   Patricia Santana Cruz (autotools plugin)
+   Ruben Van Boxem (mingw fixes)
+   Sergey Belyashov (cmake translation fix)
+   Steve King (WinCE support fixed)
+   Tobias Nätterlund (small improment to wizards, QNX work)
+   tomdeblauwe (whitespace fixes)
+   Tommi Asp (C++ fix, Symbian fixes)
+   Vasiliy Sorokin (todo plugin)
+   Victor Ostashevsky (bug fixes and translations)
+   Yuchen Deng (*many* bug fixes, exectute command support for the locator)
+

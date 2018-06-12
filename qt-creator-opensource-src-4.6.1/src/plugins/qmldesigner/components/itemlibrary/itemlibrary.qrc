@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/ItemLibrary" >
+        <file>images/item-default-icon.png</file>
+        <file>images/item-invalid-icon.png</file>
+    </qresource>
+</RCC>
+

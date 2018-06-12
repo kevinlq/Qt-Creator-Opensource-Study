@@ -1,0 +1,69 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage cli.html
+    \page cli-setup-android.html
+    \ingroup cli
+
+    \title setup-android
+    \brief Creates \QBS profiles for Android SDK and NDK installations.
+
+    \section1 Synopsis
+
+    \code
+    qbs setup-android [--settings-dir <directory>] [--ndk-dir <directory>]
+                      [--sdk-dir <directory>] [--qt-dir <directory>]
+                      <profile name>
+    \endcode
+
+    \section1 Description
+
+    Creates \QBS profiles for Android SDK and NDK installations.
+
+    If a Qt path is given, these additional profiles will be suitable for
+    building Qt binaries for the respective architecture, if the Qt
+    installation has support for it.
+
+    \section1 Options
+
+    \include cli-options.qdocinc settings-dir
+    \include cli-options.qdocinc ndk-dir
+    \include cli-options.qdocinc sdk-dir
+    \include cli-options.qdocinc qt-dir
+    \include cli-options.qdocinc help
+
+    \section1 Examples
+
+    Creates a profile with the name \c oreo that specifies the target platforms'
+    \l{qbs::}{architectures} and operating systems, as well as the
+    toolchains available:
+
+    \code
+    qbs setup-android oreo
+    \endcode
+*/

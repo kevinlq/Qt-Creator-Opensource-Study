@@ -1,0 +1,178 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of Qbs.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU Free Documentation License Usage
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of
+** this file. Please review the following information to ensure
+** the GNU Free Documentation License version 1.3 requirements
+** will be met: https://www.gnu.org/licenses/fdl-1.3.html.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \contentspage index.html
+    \qmltype archiver
+    \inqmlmodule QbsModules
+    \since Qbs 1.4
+
+    \brief Provides support for building archives.
+
+    The \c archiver module contains the properties and rules for creating (compressed) archives.
+    The output artifact has the file tag \c "archiver.archive". The sole input artifact is a text file
+    containing the list of files to package, with one file path per line. The paths can be
+    relative, in which case they will be looked for in \l{archiver::}{workingDirectory}. The file tag
+    of this input artifact is \c "archiver.input-list".
+*/
+
+/*!
+    \qmlproperty stringList archiver::flags
+
+    Custom options not covered by any of the other properties.
+
+    \defaultvalue \c []
+*/
+
+/*!
+    \qmlproperty string archiver::archiveBaseName
+
+    The base name of the archive file. That is, the file name without any
+    extensions.
+
+    \defaultvalue \l{Product::targetName}{product.targetName}
+*/
+
+/*!
+    \qmlproperty string archiver::compressionLevel
+
+    How much effort to put into the compression of a \c 7-Zip or \c zip archive.
+
+    Possible values for zip are:
+
+    \list
+        \li \c undefined
+        \li \c "0"
+        \li \c "1"
+        \li \c "2"
+        \li \c "3"
+        \li \c "4"
+        \li \c "5"
+        \li \c "6"
+        \li \c "7"
+        \li \c "8"
+        \li \c "9"
+    \endlist
+
+    7-Zip only supports 0 and the odd numbers above.
+
+    Higher numbers result in a smaller archive, but the compression process will
+    take more time.
+
+    If the value is left undefined, the default compression level is used.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string archiver::compressionType
+
+    How to compress a \c tar or \c zip archive.
+
+    Possible options are:
+
+    \list
+        \li \c "bz2"
+        \li \c "deflate"
+        \li \c "gz"
+        \li \c "none"
+        \li \c "store"
+        \li \c undefined, which uses the archiver's default compression type.
+        \li \c "xz"
+        \li \c "Z"
+    \endlist
+
+    \defaultvalue \c{"gz"} for \c tar archives, otherwise \c undefined.
+*/
+
+/*!
+    \qmlproperty string archiver::outputDirectory
+
+    Where to put the archive file.
+
+    \defaultvalue \l{Product::destinationDirectory}
+    {product.destinationDirectory}
+*/
+
+/*!
+    \qmlproperty string archiver::type
+
+    Which kind of archiver to use.
+
+    The currently supported values are:
+
+    \list
+        \li \c "7zip"
+        \li \c "tar"
+        \li \c "zip"
+    \endlist
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string archiver::workingDirectory
+
+    The directory in which to execute the archiver tool specified by
+    \l{archiver::}{command}.
+
+    \nodefaultvalue
+*/
+
+/*!
+    \qmlproperty string archiver::command
+
+    The path to the executable used to create the archive.
+
+    This is usually the native tool corresponding to the archive type being
+    produced, but may fall back to another tool also capable of producing that
+    archive type if the native tool is not installed on the host system.
+    This behavior is especially useful on platforms such as Windows, where the
+    native tools for producing \c tar and \c zip archives in particular are
+    much less likely to be installed.
+
+    The following table lists the supported \l{archiver::type}{archive types}
+    and the tools capable of producing them, listed in search order from left to
+    right:
+
+    \table
+    \header
+        \li Type
+        \li Supported tools
+    \row
+        \li 7zip
+        \li 7z
+    \row
+        \li tar
+        \li tar, 7z
+    \row
+        \li zip
+        \li zip \e (Info-Zip), 7z, jar \e (from Java JDK)
+    \endtable
+
+    \defaultvalue Depends on \l{archiver::}{type}.
+*/

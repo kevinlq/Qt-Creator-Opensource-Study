@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icon/layout">
+        <file>snapping.png</file>
+        <file>snapping@2x.png</file>
+        <file>no_snapping.png</file>
+        <file>no_snapping@2x.png</file>
+        <file>snapping_and_anchoring.png</file>
+        <file>snapping_and_anchoring@2x.png</file>
+    </qresource>
+</RCC>
