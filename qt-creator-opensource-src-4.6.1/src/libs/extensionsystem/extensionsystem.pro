@@ -1,3 +1,6 @@
+# 这个子项目是实现插件的关键，核心部分都在这里
+# 2018年8月27日22:50:19
+
 DEFINES += EXTENSIONSYSTEM_LIBRARY
 include(../../qtcreatorlibrary.pri)
 

@@ -40,6 +40,11 @@ namespace Internal {
 class PluginManager;
 class PluginSpec;
 
+
+/*
+ * 插件基类，所有插件均需要继承该类
+ * 2018年8月27日23:25:12
+*/
 class EXTENSIONSYSTEM_EXPORT IPlugin : public QObject
 {
     Q_OBJECT

@@ -1,4 +1,7 @@
+# 匹配
 include($$replace(_PRO_FILE_PWD_, ([^/]+$), \\1/\\1_dependencies.pri))
+
+# QTC_LIB_NAME在 aggregation_dependencies.pri 中定义
 TARGET = $$QTC_LIB_NAME
 
 include(../qtcreator.pri)

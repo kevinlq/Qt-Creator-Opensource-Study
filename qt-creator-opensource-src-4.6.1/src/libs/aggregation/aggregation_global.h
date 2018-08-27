@@ -22,7 +22,9 @@
 ** be met: https://www.gnu.org/licenses/gpl-3.0.html.
 **
 ****************************************************************************/
-
+/*
+ * 新版本取消的宏守护方式，改为#pragma once,用来确保头文件只包含一次
+*/
 #pragma once
 
 #include <qglobal.h>

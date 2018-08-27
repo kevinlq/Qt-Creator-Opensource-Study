@@ -33,6 +33,11 @@
 #include <QReadWriteLock>
 #include <QReadLocker>
 
+/*
+ * Aggregate 集合|打包
+ * 即将多个组件组成一个整体,将多个相关组件定义为一个聚合体
+ * 2018-8-27 22:22:37
+*/
 namespace Aggregation {
 
 class AGGREGATION_EXPORT Aggregate : public QObject

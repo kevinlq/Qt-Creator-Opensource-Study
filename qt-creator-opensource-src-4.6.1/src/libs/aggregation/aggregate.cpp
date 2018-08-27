@@ -188,6 +188,9 @@ QReadWriteLock &Aggregate::lock()
 Aggregate::Aggregate(QObject *parent)
     : QObject(parent)
 {
+    /*
+     * 这里QWriteLocker 简化了QReadWriteLock写操作,lock()刚好返回
+    */
     QWriteLocker locker(&lock());
     aggregateMap().insert(this, this);
 }
@@ -206,6 +209,11 @@ Aggregate::~Aggregate()
             disconnect(component, &QObject::destroyed, this, &Aggregate::deleteSelf);
             aggregateMap().remove(component);
         }
+        /*
+         * 这里进行了一次拷贝，components = m_components; 放在最后进行删除，有待再次理解.
+         * 将qDeleteAll操作放在写锁之外，因为这个操作不需要同步，同时该操作也比较费事吧..
+         * 2018年8月27日22:47:46
+        */
         components = m_components;
         m_components.clear();
         aggregateMap().remove(this);
