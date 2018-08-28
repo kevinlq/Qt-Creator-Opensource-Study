@@ -49,6 +49,11 @@ class CorePlugin;
 class MainWindow;
 } // Internal
 
+/*
+ * 管理所有的Action
+ * 后面需要新增加Acton都需要通过该单例类来进行创建
+ * 2018年8月28日22:38:29
+*/
 class CORE_EXPORT ActionManager : public QObject
 {
     Q_OBJECT

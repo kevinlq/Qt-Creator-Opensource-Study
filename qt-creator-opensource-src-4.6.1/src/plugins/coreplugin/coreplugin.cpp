@@ -149,7 +149,9 @@ bool CorePlugin::initialize(const QStringList &arguments, QString *errorMessage)
                                  : ThemeEntry::createTheme(ThemeEntry::themeSetting()));
     new ActionManager(this);
     ActionManager::setPresentationModeEnabled(args.presentationMode);
+
     m_mainWindow = new MainWindow;
+
     if (args.overrideColor.isValid())
         m_mainWindow->setOverrideColor(args.overrideColor);
     m_locator = new Locator;
