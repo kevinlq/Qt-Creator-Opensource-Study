@@ -64,7 +64,7 @@
 加载完成后直接构建编译即可，如果不出意外等待大概 10 多分钟时间就可以编译完成，你可以看到如下界面
 
 
-![image.png](https://note.youdao.com/yws/res/14109/WEBRESOURCEf6cc0592149f6d677041d54e40647da3)
+![](https://gitee.com/devstone/imageBed/raw/master/images/202111011131568.png)
 
 
 [^1]: https://www.devbean.net/2016/07/qt-creator-source-study-02/
