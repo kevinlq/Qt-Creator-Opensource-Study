@@ -49,8 +49,8 @@
 学习源码是一个循序渐进的过程，下面按照进度分别整理成对应的笔记，方便自己后续查看，如果能帮助到你，那么我很高兴
 
 
-- [Qt Creator 源码学习笔记01，初识QTC](/doc/learn01_studyQTC.md)
-- [Qt Creator 源码学习笔记02，认识框架结构结构](/doc/learn02_studyFramework.md)
+- [Qt Creator 源码学习笔记01，初识QTC](https://mp.weixin.qq.com/s?__biz=MzIyNzY5NTQ1NQ==&mid=2247484676&idx=1&sn=c1bd8cbd78d8e098c22353f567cc3620&chksm=e85c0b34df2b822288a7baa016f4a64df47e5e119039836ff686cb2ad3a7e28a5808efc0c13a&token=1648903909&lang=zh_CN#rd)
+- [Qt Creator 源码学习笔记02，认识框架结构结构](https://mp.weixin.qq.com/s?__biz=MzIyNzY5NTQ1NQ==&mid=2247484676&idx=1&sn=c1bd8cbd78d8e098c22353f567cc3620&chksm=e85c0b34df2b822288a7baa016f4a64df47e5e119039836ff686cb2ad3a7e28a5808efc0c13a&token=1648903909&lang=zh_CN#rd)
 - 
 
 
