@@ -43,6 +43,10 @@
 
 本仓库是`Qt Creator源码`，基于4.6.1版本，添加自己的注释以便理解
 
+本仓库目录介绍
+
+- qt-creator-opensource-src-4.6.1 实际源码目录
+- Demo/QTCLearn03 多工程管理的一些例子
 
 ## 学习笔记
 
